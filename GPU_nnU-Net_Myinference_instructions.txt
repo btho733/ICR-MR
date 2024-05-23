@@ -1,0 +1,136 @@
+***Run inference like this:***
+
+An ensemble won! What a surprise! Run the following commands to run predictions with the ensemble members:
+
+nnUNetv2_predict -d 1 -i INPUT_FOLDER -o OUTPUT_FOLDER_MODEL_1 -f  0 1 2 3 4 -tr nnUNetTrainer_150epochs -c 2d -p nnUNetPlans --npz
+nnUNetv2_predict -d 1 -i INPUT_FOLDER -o OUTPUT_FOLDER_MODEL_2 -f  0 1 2 3 4 -tr nnUNetTrainer_150epochs -c 3d_lowres -p nnUNetPlans --npz
+
+The run ensembling with:
+
+nnUNetv2_ensemble -i OUTPUT_FOLDER_MODEL_1 OUTPUT_FOLDER_MODEL_2 -o OUTPUT_FOLDER -np 8
+
+***Once inference is completed, run postprocessing like this:***
+
+nnUNetv2_apply_postprocessing -i OUTPUT_FOLDER -o OUTPUT_FOLDER_PP -pp_pkl_file ./work_dir/nnUNet_trained_models/Dataset001_nnTest01/ensembles/ensemble___nnUNetTrainer_150epochs__nnUNetPlans__2d___nnUNetTrainer_150epochs__nnUNetPlans__3d_lowres___0_1_2_3_4/postprocessing.pkl -np 8 -plans_json ./work_dir/nnUNet_trained_models/Dataset001_nnTest01/ensembles/ensemble___nnUNetTrainer_150epochs__nnUNetPlans__2d___nnUNetTrainer_150epochs__nnUNetPlans__3d_lowres___0_1_2_3_4/plans.json
+
+
+***  Don't forget to set path like this like this:  ***
+
+export nnUNet_raw="/home/adminbthomas/Downloads/nnunet/work_dir/nnUNet_raw_data_base"
+export nnUNet_preprocessed="/home/adminbthomas/Downloads/nnunet/work_dir/nnUNet_preprocessed"
+export nnUNet_results="/home/adminbthomas/Downloads/nnunet/work_dir/nnUNet_trained_models"
+
+Predictions - M1,M2,M3,M4
+**************************
+
+nnUNetv2_predict -d 1 -i /home/adminbthomas/Downloads/nnunet/work_dir/nnUNet_raw_data_base/Dataset001_nnTest01/imagesTs/imgv1v2_withpsoas -o /home/adminbthomas/Downloads/ensemble/nnunet/m1 -f  0 1 2 3 4 -tr nnUNetTrainer_150epochs -c 2d -p nnUNetPlans --save_probabilities
+
+nnUNetv2_predict -d 1 -i /home/adminbthomas/Downloads/nnunet/work_dir/nnUNet_raw_data_base/Dataset001_nnTest01/imagesTs/imgv1v2_withpsoas -o /home/adminbthomas/Downloads/ensemble/nnunet/m2 -f  0 1 2 3 4 -tr nnUNetTrainer_150epochs -c 3d_fullres -p nnUNetPlans --save_probabilities
+
+nnUNetv2_predict -d 1 -i /home/adminbthomas/Downloads/nnunet/work_dir/nnUNet_raw_data_base/Dataset001_nnTest01/imagesTs/imgv1v2_withpsoas -o /home/adminbthomas/Downloads/ensemble/nnunet/m3 -f  0 1 2 3 4 -tr nnUNetTrainer_150epochs -c 3d_lowres -p nnUNetPlans --save_probabilities
+
+nnUNetv2_predict -d 1 -i /home/adminbthomas/Downloads/nnunet/work_dir/nnUNet_raw_data_base/Dataset001_nnTest01/imagesTs/imgv1v2_withpsoas -o /home/adminbthomas/Downloads/ensemble/nnunet/m4 -f  0 1 2 3 4 -tr nnUNetTrainer_150epochs -c 3d_cascade_fullres -p nnUNetPlans --save_probabilities
+
+
+
+
+
+Ensemble models
+***************
+
+nnUNetv2_ensemble -i /home/adminbthomas/Downloads/ensemble/nnunet/m1 /home/adminbthomas/Downloads/ensemble/nnunet/m2 /home/adminbthomas/Downloads/ensemble/nnunet/m3 /home/adminbthomas/Downloads/ensemble/nnunet/m4 -o /home/adminbthomas/Downloads/ensemble/nnunet/nm1m2m3m4 -np 8
+
+nnUNetv2_ensemble -i /home/adminbthomas/Downloads/ensemble/nnunet/m1 /home/adminbthomas/Downloads/ensemble/nnunet/m2 -o /home/adminbthomas/Downloads/ensemble/nnunet/nm1m2 -np 8
+
+nnUNetv2_ensemble -i /home/adminbthomas/Downloads/ensemble/nnunet/m1 /home/adminbthomas/Downloads/ensemble/nnunet/m3 -o /home/adminbthomas/Downloads/ensemble/nnunet/nm1m3 -np 8
+
+nnUNetv2_ensemble -i /home/adminbthomas/Downloads/ensemble/nnunet/m1 /home/adminbthomas/Downloads/ensemble/nnunet/m4 -o /home/adminbthomas/Downloads/ensemble/nnunet/nm1m4 -np 8
+
+nnUNetv2_ensemble -i /home/adminbthomas/Downloads/ensemble/nnunet/m2 /home/adminbthomas/Downloads/ensemble/nnunet/m3 -o /home/adminbthomas/Downloads/ensemble/nnunet/nm2m3 -np 8
+
+nnUNetv2_ensemble -i /home/adminbthomas/Downloads/ensemble/nnunet/m2 /home/adminbthomas/Downloads/ensemble/nnunet/m4 -o /home/adminbthomas/Downloads/ensemble/nnunet/nm2m4 -np 8
+
+nnUNetv2_ensemble -i /home/adminbthomas/Downloads/ensemble/nnunet/m3 /home/adminbthomas/Downloads/ensemble/nnunet/m4 -o /home/adminbthomas/Downloads/ensemble/nnunet/nm3m4 -np 8
+
+nnUNetv2_ensemble -i /home/adminbthomas/Downloads/ensemble/nnunet/m1 /home/adminbthomas/Downloads/ensemble/nnunet/m2 /home/adminbthomas/Downloads/ensemble/nnunet/m3 -o /home/adminbthomas/Downloads/ensemble/nnunet/nm1m2m3 -np 8
+
+nnUNetv2_ensemble -i /home/adminbthomas/Downloads/ensemble/nnunet/m1 /home/adminbthomas/Downloads/ensemble/nnunet/m2 /home/adminbthomas/Downloads/ensemble/nnunet/m4 -o /home/adminbthomas/Downloads/ensemble/nnunet/nm1m2m4 -np 8
+
+nnUNetv2_ensemble -i /home/adminbthomas/Downloads/ensemble/nnunet/m1 /home/adminbthomas/Downloads/ensemble/nnunet/m3 /home/adminbthomas/Downloads/ensemble/nnunet/m4 -o /home/adminbthomas/Downloads/ensemble/nnunet/nm1m3m4 -np 8
+
+nnUNetv2_ensemble -i /home/adminbthomas/Downloads/ensemble/nnunet/m2 /home/adminbthomas/Downloads/ensemble/nnunet/m3 /home/adminbthomas/Downloads/ensemble/nnunet/m4 -o /home/adminbthomas/Downloads/ensemble/nnunet/nm2m3m4 -np 8
+
+
+
+
+
+
+/Downloads/ensemble/nnunet/AllVisits_results
+nnUNetv2_predict -d 1 -i /home/adminbthomas/Downloads/ensemble/data/AllVisits -o /home/adminbthomas/Downloads/ensemble/nnunet/AllVisits_results/m3 -f  0 1 2 3 4 -tr nnUNetTrainer_150epochs -c 3d_lowres -p nnUNetPlans --save_probabilities
+
+Downloads/ensemble/data/imagesTs_STAPLE
+
+export nnUNet_raw="/home/adminbthomas/Downloads/nnunet/work_dir/nnUNet_raw_data_base"
+export nnUNet_preprocessed="/home/adminbthomas/Downloads/nnunet/work_dir/nnUNet_preprocessed"
+export nnUNet_results="/home/adminbthomas/Downloads/nnunet/work_dir/nnUNet_trained_models"
+
+nnUNetv2_predict -d 1 -i /home/adminbthomas/Downloads/ensemble/data/imagesTs_STAPLE -o /home/adminbthomas/Downloads/ensemble/nnunet_skeleton/m1 -f  0 1 2 3 4 -tr nnUNetTrainer_150epochs -c 2d -p nnUNetPlans --save_probabilities
+
+nnUNetv2_predict -d 1 -i /home/adminbthomas/Downloads/ensemble/data/imagesTs_STAPLE -o /home/adminbthomas/Downloads/ensemble/nnunet_skeleton/m2 -f  0 1 2 3 4 -tr nnUNetTrainer_150epochs -c 3d_fullres -p nnUNetPlans --save_probabilities
+
+nnUNetv2_predict -d 1 -i /home/adminbthomas/Downloads/ensemble/data/imagesTs_STAPLE -o /home/adminbthomas/Downloads/ensemble/nnunet_skeleton/m3 -f  0 1 2 3 4 -tr nnUNetTrainer_150epochs -c 3d_lowres -p nnUNetPlans --save_probabilities
+
+nnUNetv2_predict -d 1 -i /home/adminbthomas/Downloads/ensemble/data/imagesTs_STAPLE -o /home/adminbthomas/Downloads/ensemble/nnunet_skeleton/m4 -f  0 1 2 3 4 -tr nnUNetTrainer_150epochs -c 3d_cascade_fullres -p nnUNetPlans --save_probabilities
+
+
+nnUNetv2_ensemble -i /home/adminbthomas/Downloads/ensemble/nnunet_skeleton/m1 /home/adminbthomas/Downloads/ensemble/nnunet_skeleton/m2 /home/adminbthomas/Downloads/ensemble/nnunet_skeleton/m3 /home/adminbthomas/Downloads/ensemble/nnunet_skeleton/m4 -o /home/adminbthomas/Downloads/ensemble/nnunet_skeleton/nm1m2m3m4 -np 8
+
+nnUNetv2_ensemble -i /home/adminbthomas/Downloads/ensemble/nnunet_skeleton/m1 /home/adminbthomas/Downloads/ensemble/nnunet_skeleton/m2 -o /home/adminbthomas/Downloads/ensemble/nnunet_skeleton/nm1m2 -np 8
+
+nnUNetv2_ensemble -i /home/adminbthomas/Downloads/ensemble/nnunet_skeleton/m1 /home/adminbthomas/Downloads/ensemble/nnunet_skeleton/m3 -o /home/adminbthomas/Downloads/ensemble/nnunet_skeleton/nm1m3 -np 8
+
+nnUNetv2_ensemble -i /home/adminbthomas/Downloads/ensemble/nnunet_skeleton/m1 /home/adminbthomas/Downloads/ensemble/nnunet_skeleton/m4 -o /home/adminbthomas/Downloads/ensemble/nnunet_skeleton/nm1m4 -np 8
+
+nnUNetv2_ensemble -i /home/adminbthomas/Downloads/ensemble/nnunet_skeleton/m2 /home/adminbthomas/Downloads/ensemble/nnunet_skeleton/m3 -o /home/adminbthomas/Downloads/ensemble/nnunet_skeleton/nm2m3 -np 8
+
+nnUNetv2_ensemble -i /home/adminbthomas/Downloads/ensemble/nnunet_skeleton/m2 /home/adminbthomas/Downloads/ensemble/nnunet_skeleton/m4 -o /home/adminbthomas/Downloads/ensemble/nnunet_skeleton/nm2m4 -np 8
+
+nnUNetv2_ensemble -i /home/adminbthomas/Downloads/ensemble/nnunet_skeleton/m3 /home/adminbthomas/Downloads/ensemble/nnunet_skeleton/m4 -o /home/adminbthomas/Downloads/ensemble/nnunet_skeleton/nm3m4 -np 8
+
+nnUNetv2_ensemble -i /home/adminbthomas/Downloads/ensemble/nnunet_skeleton/m1 /home/adminbthomas/Downloads/ensemble/nnunet_skeleton/m2 /home/adminbthomas/Downloads/ensemble/nnunet_skeleton/m3 -o /home/adminbthomas/Downloads/ensemble/nnunet_skeleton/nm1m2m3 -np 8
+
+nnUNetv2_ensemble -i /home/adminbthomas/Downloads/ensemble/nnunet_skeleton/m1 /home/adminbthomas/Downloads/ensemble/nnunet_skeleton/m2 /home/adminbthomas/Downloads/ensemble/nnunet_skeleton/m4 -o /home/adminbthomas/Downloads/ensemble/nnunet_skeleton/nm1m2m4 -np 8
+
+nnUNetv2_ensemble -i /home/adminbthomas/Downloads/ensemble/nnunet_skeleton/m1 /home/adminbthomas/Downloads/ensemble/nnunet_skeleton/m3 /home/adminbthomas/Downloads/ensemble/nnunet_skeleton/m4 -o /home/adminbthomas/Downloads/ensemble/nnunet_skeleton/nm1m3m4 -np 8
+
+nnUNetv2_ensemble -i /home/adminbthomas/Downloads/ensemble/nnunet_skeleton/m2 /home/adminbthomas/Downloads/ensemble/nnunet_skeleton/m3 /home/adminbthomas/Downloads/ensemble/nnunet_skeleton/m4 -o /home/adminbthomas/Downloads/ensemble/nnunet_skeleton/nm2m3m4 -np 8
+
+
+
+------------Myeloma-----------------------------------------------------------------------------------------------------
+3d_fullres
+----------
+CUDA_VISIBLE_DEVICES=0 nnUNetv2_train 1 3d_fullres 0 -num_gpus 1 --npz >>trace_03.txt &
+CUDA_VISIBLE_DEVICES=1 nnUNetv2_train 1 3d_fullres 1 -num_gpus 1 --npz >>trace_04.txt &
+CUDA_VISIBLE_DEVICES=0 nnUNetv2_train 1 3d_fullres 0 -tr nnUNetTrainer_150epochs -num_gpus 1 --npz >>trace_150fold0.txt &
+CUDA_VISIBLE_DEVICES=1 nnUNetv2_train 1 3d_fullres 1 -tr nnUNetTrainer_150epochs -num_gpus 1 --npz >>trace_150fold1.txt &
+CUDA_VISIBLE_DEVICES=0 nnUNetv2_train 1 3d_fullres 2 -tr nnUNetTrainer_150epochs -num_gpus 1 --npz >>trace_150fold2.txt &
+CUDA_VISIBLE_DEVICES=1 nnUNetv2_train 1 3d_fullres 3 -tr nnUNetTrainer_150epochs -num_gpus 1 --npz >>trace_150fold3.txt &
+CUDA_VISIBLE_DEVICES=0 nnUNetv2_train 1 3d_fullres 4 -tr nnUNetTrainer_150epochs -num_gpus 1 --npz >>trace_150fold4.txt &
+
+2d
+--
+CUDA_VISIBLE_DEVICES=1 nnUNetv2_train 1 2d 3 -num_gpus 1 --npz >>trace2d_1000fold3.txt &
+CUDA_VISIBLE_DEVICES=0 nnUNetv2_train 1 2d 4 -tr nnUNetTrainer_150epochs -num_gpus 1 --npz >>trace2d_150fold4.txt &
+CUDA_VISIBLE_DEVICES=1 nnUNetv2_train 1 2d 3 -tr nnUNetTrainer_150epochs -num_gpus 1 --npz >>trace2d_150fold3.txt &
+CUDA_VISIBLE_DEVICES=0 nnUNetv2_train 1 2d 2 -tr nnUNetTrainer_150epochs -num_gpus 1 --npz >>trace2d_150fold2.txt &
+CUDA_VISIBLE_DEVICES=0 nnUNetv2_train 1 2d 1 -tr nnUNetTrainer_150epochs -num_gpus 1 --npz >>trace2d_150fold1.txt &
+CUDA_VISIBLE_DEVICES=1 nnUNetv2_train 1 2d 0 -tr nnUNetTrainer_150epochs -num_gpus 1 --npz >>trace2d_150fold0.txt &
+
+
+
+nnUNetv2_predict -d 1 -i /home/adminbthomas/Downloads/nnunet_myeloma/nnUNet_raw/Dataset001_Myeloma/imagesTs -o /home/adminbthomas/Downloads/ensemble/nnunet_myeloma/m2 -f  0 1 2 3 4 -tr nnUNetTrainer_150epochs -c 3d_fullres -p nnUNetPlans --save_probabilities
+
+nnUNetv2_predict -d 1 -i /home/adminbthomas/Downloads/nnunet_myeloma/nnUNet_raw/Dataset001_Myeloma/imagesTs -o /home/adminbthomas/Downloads/ensemble/nnunet_myeloma/m1 -f  0 1 2 3 4 -tr nnUNetTrainer_150epochs -c 2d -p nnUNetPlans --save_probabilities
+
+nnUNetv2_ensemble -i /home/adminbthomas/Downloads/ensemble/nnunet_myeloma/m1 /home/adminbthomas/Downloads/ensemble/nnunet_myeloma/m2 -o /home/adminbthomas/Downloads/ensemble/nnunet_myeloma/nm1m2 -np 8
